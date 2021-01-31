@@ -11,6 +11,18 @@ describe('rudhir website', function () {
             }
         };
 
+        var closeAlert = async function (acceptAlert) {
+            try {
+                let otpAlert = await browser.switchTo().alert();
+                if (acceptAlert) {
+                    console.log("Alert Accepted in the function ");
+                    return otpAlert.accept();
+                }
+
+                return otpAlert.dismiss();
+            } catch (e) { console.log(" Exception caught " + e); }
+        };
+
         console.log("Navigating to landing page");
         let url = 'http://devrudh.s3-website.ap-south-1.amazonaws.com/';
         browser.get(url);
@@ -154,28 +166,30 @@ describe('rudhir website', function () {
         console.log("Clicking on Register");
         let registerButton = element(by.className('btn btn-primary btn-lg'));
         registerButton.click();
+        browser.sleep(3000);
 
-        console.log("Clicking on Register");
-        let otpTxtField = element(by.className('form-control ng-valid ng-touched ng-dirty'));
-        otpTxtField.sendKeys('123abc');
-
+        console.log("Accepting Registration T&C Alert");
+        browser.sleep(6000);
+        closeAlert(true);
+ 
+        console.log("Accepting Otp Alert");
+        browser.sleep(6000);
+        closeAlert(true);
+ 
+        console.log("Filling Patient Otp Number ");
+        let patientOtp = element(by.css('[placeholder = "Enter your OTP"]')); //element(by.name('otp'));
+        patientOtp.clear();
+        patientOtp.sendKeys('123abc');
+        browser.sleep(1000);
+    
         console.log("Clicking on Verify");
-        let verifyButton = element(by.className('btn btn-primary btn-lg'));
+        let verifyButton = element(by.className('btn btn-primary'));
         verifyButton.click();
+    
+        console.log("Donor Registration Completed");
 
-        console.log("Accepting Alert");
-        //let tAndCAlert = browser.switchTo().alert();
-        //expect((tAndCAlert.getText()).toEqual('By registering with us, you agree to following\\n1. The information will be used to match blood groups for blood donations\\n2. rudhir.org may share this information to associated hospitals/blood bank as needed and they may contact you.\\n3. You agree to receive automated SMS notification for blood donation requirements.'));
-        //console.log(tAndCAlert.getText());
-        //tAndCAlert.accept();
-        browser.driver.switchTo().alert().then( // <- this fixes the problem
-            function (alert) {
-              alert.accept();
-            },
-            function (error) {
-            }
-          );
-        
+        browser.sleep(1000);
+    
 
     }, 120000);
 
