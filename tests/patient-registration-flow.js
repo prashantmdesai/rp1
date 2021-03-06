@@ -122,7 +122,7 @@ describe('rudhir website', function () {
     console.log("Filling Patient Cell Number ");
     let patientCellNumber = element(by.id('patientCellNumber'));
     patientCellNumber.clear();
-    patientCellNumber.sendKeys('2890090203');
+    patientCellNumber.sendKeys('2890090204');
     browser.sleep(1000);
 
     console.log("Filling Relative First Name ");

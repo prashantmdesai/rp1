@@ -118,7 +118,7 @@ describe('rudhir website', function () {
         console.log("Filling donor Cell Number ");
         let donorCellNumber = element(by.css('input[name="cellNumber"]')).click();
         donorCellNumber.clear();
-        donorCellNumber.sendKeys('9203423333');
+        donorCellNumber.sendKeys('9203423334');
         browser.sleep(1000);
 
 
