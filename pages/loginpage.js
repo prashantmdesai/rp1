@@ -1,29 +1,40 @@
-let loginpage = function(){
-    
-    let userName_input = element(by.name('username'));
-    let pwd_input = element(by.name('password'));
-    let loginButton = element(by.className('btn btn-primary'));
+let loginpage = function () {
+    const loginLink = element(by.id("nav-login"));
+    const usernameInput = element(by.name("username"));
+    const passwordInput = element(by.name("password"));
+    const loginButton = element(by.className("btn btn-primary"));
+    const logoutLink = element(by.id("nav-logout"));
 
-    this.get = function(url){
+    this.get = function (url) {
         browser.get(url);
-    }
-
-    this.enterUserName = function(userNm){
-        userName_input.sendKeys(userNm);
     };
 
-    this.enterPassword = function(pwd){
-        pwd_input.sendKeys(pwd);
+    this.clickLoginLink = function () {
+        loginLink.click();
     };
 
-    this.clickLogin = function(){
+    this.enterUsername = function (username) {
+        usernameInput.sendKeys(username);
+    };
+
+    this.enterPassword = function (password) {
+        passwordInput.sendKeys(password);
+    };
+
+    this.clickLoginButton = function () {
         loginButton.click();
     };
 
-    this.verifyResult = function(result){
-        let logoutLink = element(by.id('nav-logout'));
-        expect(logoutLink.getText()).toEqual(result);
-    }
+    this.clickLogoutLink = function () {
+        logoutLink.click();
+    };
+
+    this.verifyAlert = function (errMsg) {
+        browser.wait(protractor.ExpectedConditions.alertIsPresent(), 10000);
+        const alert = browser.switchTo().alert();
+        expect(alert.getText()).toEqual(errMsg);
+        alert.accept();
+    };
 };
 
 module.exports = new loginpage();
