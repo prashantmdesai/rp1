@@ -1,33 +1,37 @@
-describe('rudhir website', function(){
+const loginpage = require("../pages/loginpage");
+const errMsg = "Error: Username or password is incorrect";
 
-    it('rudhir login', function(){
-        browser.get('http://devrudh.s3-website.ap-south-1.amazonaws.com/');
-        
-        let loginLink = element(by.id('nav-login'));
-        loginLink.click();
-        browser.sleep(1000);
+describe("rudhir website", function () {
+    beforeEach(function () {
+        loginpage.get("http://devrudh.s3-website.ap-south-1.amazonaws.com/");
+        loginpage.clickLoginLink();
+    });
 
-        let userIdInput = element(by.name('username'));
-        userIdInput.sendKeys('raj.kapoor@rudhir.org');
-        browser.sleep(1000);
+    it("correct credentials", function () {
+        loginpage.enterUsername("raj.kapoor@rudhir.org");
+        loginpage.enterPassword("demo123");
+        loginpage.clickLoginButton();
+        loginpage.clickLogoutLink();
+    });
 
-        let passWdInput = element(by.name('password'));
-        passWdInput.sendKeys('demo123');
-        browser.sleep(1000);
+    it("incorrect password", function () {
+        loginpage.enterUsername("raj.kapoor@rudhir.org");
+        loginpage.enterPassword("wrong");
+        loginpage.clickLoginButton();
+        loginpage.verifyAlert(errMsg);
+    });
 
-        //input.btn.btn-primary
-        let loginButton = element(by.className('btn btn-primary'));
-        loginButton.click();
+    it("incorrect email", function () {
+        loginpage.enterUsername("random@rudhir.org");
+        loginpage.enterPassword("demo123");
+        loginpage.clickLoginButton();
+        loginpage.verifyAlert(errMsg);
+    });
 
-        browser.sleep(1000);
-
-        let logoutLink = element(by.id('nav-logout'));
-        expect(logoutLink.getText()).toEqual('Logout');
-
-        logoutLink.click();
-
-        browser.sleep(1000);
-
-    }, 120000);
-
+    it("incorrect email and password", function () {
+        loginpage.enterUsername("random@rudhir.org");
+        loginpage.enterPassword("wrong");
+        loginpage.clickLoginButton();
+        loginpage.verifyAlert(errMsg);
+    });
 });
